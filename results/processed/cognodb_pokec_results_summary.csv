@@ -1,0 +1,5 @@
+workload,average_ms,median_ms,p95_ms,p99_ms,min_ms,max_ms,avg_records,successful_iterations,failed_iterations
+point_lookup,254.48,242.33,293.79,300.08,240.47,300.08,1.0,20,0
+one_hop_traversal,245.4,242.84,253.63,265.94,240.48,265.94,14.0,20,0
+two_hop_traversal,281.46,282.02,338.45,356.8,249.63,356.8,283.0,20,0
+aggregation,5148.7,5118.84,6160.56,6353.74,3338.93,6353.74,10.0,20,0
