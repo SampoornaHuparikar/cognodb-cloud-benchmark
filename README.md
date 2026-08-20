@@ -57,5 +57,13 @@ For each workload:
 - Latency was measured in milliseconds.
 - Average, median, P95 and P99 latency were calculated.
 
+👉 **Delete ONLY those final three backticks.**
+
+Then **save/commit**.
+
+That's it. Don't do anything else yet.
+
+Once you've done that, just tell me **"done"** and I'll give you the next single step. 🌷
+
 
 
