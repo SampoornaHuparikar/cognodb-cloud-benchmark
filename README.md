@@ -34,6 +34,7 @@ Each workload uses:
 
 All workloads completed with **20/20 successful iterations and 0 failures**.
 
+
 ## Project Structure
 
 ```text
@@ -45,6 +46,8 @@ benchmark/
 results/
 ├── raw/
 └── charts/
+```
+
 ## Methodology
 
 The benchmark was designed to measure query latency for representative graph workloads on CognoDB Cloud using the Stanford POKEC dataset.
@@ -56,14 +59,7 @@ For each workload:
 - Failed iterations were recorded separately.
 - Latency was measured in milliseconds.
 - Average, median, P95 and P99 latency were calculated.
-
-👉 **Delete ONLY those final three backticks.**
-
-Then **save/commit**.
-
-That's it. Don't do anything else yet.
-
-Once you've done that, just tell me **"done"** and I'll give you the next single step. 🌷
+Once you've done that, just tell me **"done"** and I'll give you the next single step.
 
 
 
