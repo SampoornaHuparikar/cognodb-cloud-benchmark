@@ -45,3 +45,16 @@ benchmark/
 results/
 ├── raw/
 └── charts/
+## Methodology
+
+The benchmark was designed to measure query latency for representative graph workloads on CognoDB Cloud using the Stanford POKEC dataset.
+
+For each workload:
+
+- 3 warm-up runs were executed.
+- 20 measured iterations were executed.
+- Failed iterations were recorded separately.
+- Latency was measured in milliseconds.
+- Average, median, P95 and P99 latency were calculated.
+
+
