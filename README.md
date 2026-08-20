@@ -63,3 +63,5 @@ Once you've done that, just tell me **"done"** and I'll give you the next single
 
 
 
+=======
+>>>>>>> e5b14b3 (Improve README documentation)
