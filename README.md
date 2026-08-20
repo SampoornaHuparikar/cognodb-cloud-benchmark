@@ -60,4 +60,12 @@ For each workload:
 - Latency was measured in milliseconds.
 - Average, median, P95 and P99 latency were calculated.
   
->>>>>>> e5b14b3 (Improve README documentation)
+>>>>>>> e5b14b3
+## Benchmark Environment
+
+- Database: CognoDB Cloud
+- Dataset: Stanford POKEC
+- Query latency measured from the benchmark client
+- Warm-up iterations: 3
+- Measured iterations: 20
+- Latency unit: milliseconds
