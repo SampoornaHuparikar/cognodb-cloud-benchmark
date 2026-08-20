@@ -59,9 +59,5 @@ For each workload:
 - Failed iterations were recorded separately.
 - Latency was measured in milliseconds.
 - Average, median, P95 and P99 latency were calculated.
-Once you've done that, just tell me **"done"** and I'll give you the next single step.
-
-
-
-=======
+Once you've done that, just tell me **"done"** 
 >>>>>>> e5b14b3 (Improve README documentation)
