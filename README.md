@@ -1,4 +1,3 @@
-@'
 # CognoDB Cloud Benchmark
 
 A reproducible benchmark for evaluating graph query performance on CognoDB Cloud using the Stanford POKEC social-network dataset.
