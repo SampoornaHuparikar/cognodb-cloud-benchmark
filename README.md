@@ -1,3 +1,4 @@
+@'
 # CognoDB Cloud Benchmark
 
 A reproducible benchmark for evaluating graph query performance on CognoDB Cloud using the Stanford POKEC social-network dataset.
@@ -5,8 +6,9 @@ A reproducible benchmark for evaluating graph query performance on CognoDB Cloud
 ## Dataset
 
 - Dataset: Stanford POKEC
-- Nodes: ~243K
-- Relationships: ~672K
+- Imported nodes: 80,712
+- Imported relationships: 170,000
+- Dataset file: `data/soc-pokec-relationships.txt.gz`
 
 ## Workloads
 
@@ -23,34 +25,34 @@ Each workload uses:
 - 20 measured runs
 - Average, median, P95 and P99 latency
 
-## Latest Results
+## Results
 
-| Workload | Average | Median | P95 | P99 |
+| Workload | Average (ms) | Median (ms) | P95 (ms) | P99 (ms) |
 |---|---:|---:|---:|---:|
-| Point lookup | 368.26 ms | 350.84 ms | 540.93 ms | 590.30 ms |
-| One-hop traversal | 446.52 ms | 452.55 ms | 619.72 ms | 714.13 ms |
-| Two-hop traversal | 393.58 ms | 275.22 ms | 916.26 ms | 1661.20 ms |
-| Aggregation | 5175.77 ms | 5179.96 ms | 6038.64 ms | 6559.59 ms |
+| Point lookup | 77.69 | 74.10 | 93.97 | 102.02 |
+| One-hop traversal | 81.71 | 78.93 | 97.41 | 112.77 |
+| Two-hop traversal | 91.96 | 88.89 | 114.89 | 117.61 |
+| Aggregation | 121.82 | 115.25 | 143.04 | 218.17 |
 
 All workloads completed with **20/20 successful iterations and 0 failures**.
 
+## Charts
 
-## Project Structure
+### Average latency
 
-```text
-benchmark/
-├── datasets/
-├── workloads/
-└── analysis/
+![Average latency](results/charts/average_latency.png)
 
-results/
-├── raw/
-└── charts/
-```
+### Median vs P95
+
+![Median vs P95](results/charts/median_vs_p95.png)
+
+### Latency range
+
+![Latency range](results/charts/latency_range.png)
 
 ## Methodology
 
-The benchmark was designed to measure query latency for representative graph workloads on CognoDB Cloud using the Stanford POKEC dataset.
+The benchmark measures query latency for representative graph workloads on CognoDB Cloud using the Neo4j-compatible Python driver.
 
 For each workload:
 
@@ -59,13 +61,10 @@ For each workload:
 - Failed iterations were recorded separately.
 - Latency was measured in milliseconds.
 - Average, median, P95 and P99 latency were calculated.
-  
->>>>>>> e5b14b3
-## Benchmark Environment
 
-- Database: CognoDB Cloud
-- Dataset: Stanford POKEC
-- Query latency measured from the benchmark client
-- Warm-up iterations: 3
-- Measured iterations: 20
-- Latency unit: milliseconds
+## Reproducibility
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
