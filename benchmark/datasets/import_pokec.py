@@ -1,6 +1,7 @@
 import os
 import gzip
 import time
+import certifi
 
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -8,9 +9,11 @@ from neo4j.exceptions import ServiceUnavailable, TransientError
 
 load_dotenv()
 
-URI = os.getenv("COGNODB_URI")
-USERNAME = os.getenv("COGNODB_USERNAME")
-PASSWORD = os.getenv("COGNODB_PASSWORD")
+os.environ["SSL_CERT_FILE"] = certifi.where()
+
+URI = os.getenv("NEO4J_URI")
+USERNAME = os.getenv("NEO4J_USERNAME")
+PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 DATA_FILE = "data/soc-pokec-relationships.txt.gz"
 
@@ -30,16 +33,13 @@ def create_driver():
 
 def import_batch(driver, batch):
     for attempt in range(1, MAX_RETRIES + 1):
-
         try:
             with driver.session() as session:
                 session.run(
                     """
                     UNWIND $rows AS row
-
                     MERGE (a:Person {id: row.source})
                     MERGE (b:Person {id: row.target})
-
                     MERGE (a)-[:KNOWS]->(b)
                     """,
                     rows=batch,
@@ -48,33 +48,40 @@ def import_batch(driver, batch):
             return True
 
         except (ServiceUnavailable, TransientError, OSError) as error:
-
             print(
-                f"⚠️ Batch failed "
+                f"Batch failed "
                 f"(attempt {attempt}/{MAX_RETRIES}): {error}"
             )
 
             if attempt < MAX_RETRIES:
                 time.sleep(3)
-                driver.verify_connectivity()
 
     return False
 
 
 def import_pokec():
 
-    print("Connecting to CognoDB...")
+    print("Connecting to Neo4j...")
+
+    if not URI:
+        raise RuntimeError("NEO4J_URI is missing from .env")
+
+    if not USERNAME:
+        raise RuntimeError("NEO4J_USERNAME is missing from .env")
+
+    if not PASSWORD:
+        raise RuntimeError("NEO4J_PASSWORD is missing from .env")
 
     driver = create_driver()
-    driver.verify_connectivity()
-
-    print("✅ Connected to CognoDB")
-    print("Starting POKEC import...")
-
-    batch = []
-    total = 0
 
     try:
+        driver.verify_connectivity()
+
+        print("Connected to Neo4j successfully.")
+        print("Starting POKEC import...")
+
+        batch = []
+        total = 0
 
         with gzip.open(DATA_FILE, "rt", encoding="utf-8") as file:
 
@@ -93,41 +100,42 @@ def import_pokec():
                 source = int(parts[0])
                 target = int(parts[1])
 
-                batch.append(
-                    {
-                        "source": source,
-                        "target": target,
-                    }
-                )
+                batch.append({
+                    "source": source,
+                    "target": target
+                })
 
                 if len(batch) >= BATCH_SIZE:
 
                     success = import_batch(driver, batch)
 
                     if not success:
-                        print("❌ Batch failed after maximum retries.")
-                        print("Stopping import safely.")
-                        return
+                        raise RuntimeError(
+                            "Batch failed after maximum retries."
+                        )
 
                     total += len(batch)
 
-                    print(f"Imported {total:,} relationships")
+                    print(
+                        f"Imported {total:,} relationships..."
+                    )
 
                     batch.clear()
 
-        if batch:
+            if batch:
 
-            success = import_batch(driver, batch)
+                success = import_batch(driver, batch)
 
-            if not success:
-                print("❌ Final batch failed.")
-                return
+                if not success:
+                    raise RuntimeError(
+                        "Final batch failed after maximum retries."
+                    )
 
-            total += len(batch)
+                total += len(batch)
 
         print()
-        print("✅ Import complete!")
-        print(f"Total relationships processed: {total:,}")
+        print("POKEC import completed successfully!")
+        print(f"Relationships processed: {total:,}")
 
     finally:
         driver.close()
